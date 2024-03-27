@@ -10,6 +10,7 @@ export default async function Media() {
   // console.log(data);
 
   const data = await serverAPI.index.movie.latest();
+  // const data = await serverAPI.tmdb.search({ movieName: "batman" });
 
   if (data && data.length > 0) {
     // console.log(data[0]["title"]);
