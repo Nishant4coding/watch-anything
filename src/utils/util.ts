@@ -66,6 +66,8 @@ export function getAverageRGB(bgfile: string): Promise<typeRBG> {
 
 
 // handel landing page search bar
-export function landingSearch(inputs: string) {
+export async function landingSearch(inputs: string) {
   // pass
+  console.log(inputs)
+  //takes query and redirect to the different pages on the basis of the query type
 } 

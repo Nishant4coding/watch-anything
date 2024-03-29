@@ -6,10 +6,36 @@ import style from "@/styles/loading.module.css";
 import { breathe, topToPossition } from "@/utils/motionPresets";
 import { motion, stagger, useAnimate } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ActionBtns from "./ActionBtns";
+import { useRouter } from "next/navigation";
+import { landingSearch } from "@/utils/util";
 
 export default function HomePageLayout() {
+
+  const router = useRouter();
+  const [query, setQuery] = useState("");
+
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+        // Check if the input is a magnet link
+        const isMagnetLink = /^magnet:\?xt=urn:[a-zA-Z0-9]+:[a-zA-Z0-9]{32,40}&dn=.+&tr=.+$/i.test(query);
+        if (isMagnetLink) {
+                router.push(`/folder?url=${query}`);
+            // Route to the show page for magnet links
+            console.log("Routing to show page for magnet link:", query);
+        } else {
+            // Route to the media page for simple strings
+            router.push(`/feed?q=${query}`);
+            console.log("Routing to media page for simple string:", query);
+        }
+        await landingSearch(query)
+    }
+}
+
+
+
+
   const heroTextRef = useRef<HTMLDivElement>(null);
   const inputTextRef = useRef<HTMLDivElement>(null);
   const isMounted = RenderCompleted();
@@ -89,7 +115,9 @@ export default function HomePageLayout() {
                   y: -10,
                   transition: { duration: 0.2 },
                 }}
-                onChange={(e) => console.log(e.target.value)}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyPress={handleKeyPress}
                 className={`${style.inputTextField} text-sm lg:text-3xl rounded-sm inset-2 w-full p-3 cursor-pointer z-10 `}
                 type="text"
                 placeholder="Search for a movie by name or magnet url here..."
