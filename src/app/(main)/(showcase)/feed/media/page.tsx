@@ -53,8 +53,8 @@ export default async function Media() {
             {item.title.length > 50 ? item.title.substring(0, 50) + '...' : item.title}
             </div>
             <div>
-              <strong>Publish Date:</strong> {item.pubDate}
-            </div>
+              <strong>Date:</strong> {item.pubDate.length>20?item.pubDate.substring(0,16) :item.pubDate}
+            </div><br />
             <div>
               <strong>Categories:</strong>{item.category}              
             </div>
